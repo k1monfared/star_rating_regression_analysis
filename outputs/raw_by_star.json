@@ -1,0 +1,44 @@
+{
+  "by_star": {
+    "1": {
+      "n_attempts": 4165,
+      "completion_rate": 0.6641056422569027,
+      "mean_length": 51.45625451916124,
+      "median_length": 47.0,
+      "share_mobile": 0.6792316926770708,
+      "mean_experience_z": -0.2857144297719088
+    },
+    "2": {
+      "n_attempts": 3105,
+      "completion_rate": 0.5706924315619968,
+      "mean_length": 69.74040632054177,
+      "median_length": 64.0,
+      "share_mobile": 0.5713365539452496,
+      "mean_experience_z": -0.1276673752012883
+    },
+    "3": {
+      "n_attempts": 4137,
+      "completion_rate": 0.5694948029973411,
+      "mean_length": 80.95670628183362,
+      "median_length": 73.0,
+      "share_mobile": 0.47981629199903314,
+      "mean_experience_z": 0.17839431955523324
+    },
+    "4": {
+      "n_attempts": 12088,
+      "completion_rate": 0.6296326935804103,
+      "mean_length": 76.38864800946,
+      "median_length": 69.0,
+      "share_mobile": 0.5158007941760424,
+      "mean_experience_z": 0.2956431915949702
+    },
+    "5": {
+      "n_attempts": 36505,
+      "completion_rate": 0.6903985755375975,
+      "mean_length": 53.87072967503869,
+      "median_length": 49.0,
+      "share_mobile": 0.6668401588823449,
+      "mean_experience_z": -0.07463996712779074
+    }
+  }
+}

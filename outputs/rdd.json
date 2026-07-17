@@ -1,0 +1,14 @@
+{
+  "formula": "log_weekly_attempts ~ above + running + above:running",
+  "bandwidth": 0.2,
+  "n_in_band": 3153,
+  "injected_jump": 0.08,
+  "estimated_jump": 0.07957304994725192,
+  "estimated_jump_ci": [
+    0.07125756894193812,
+    0.08788853095256573
+  ],
+  "std_err": 0.0042410395873664205,
+  "p_value": 1.533557324938791e-74,
+  "recovered_within_ci": true
+}

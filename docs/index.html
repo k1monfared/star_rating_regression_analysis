@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Review funnel explorer: completion and length by star</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #f6f8fa;
+    --ink: #1f2328;
+    --muted: #6b7280;
+    --raw: #9aa0a6;
+    --adj: #1f6feb;
+    --grid: #e5e7eb;
+    --accent: #2f9e44;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 24px; font-size: 14px; }
+  .note {
+    background: var(--panel); border: 1px solid var(--grid); border-radius: 8px;
+    padding: 12px 14px; font-size: 13px; color: var(--muted); margin-bottom: 24px;
+  }
+  .banner {
+    margin: 0 0 24px; padding: 12px 16px; border-left: 4px solid var(--adj);
+    background: var(--panel); border-radius: 6px; font-size: 15px; color: var(--ink);
+  }
+  .controls { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; align-items: flex-end; }
+  .control label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em; }
+  select {
+    font-size: 14px; padding: 7px 10px; border: 1px solid var(--grid);
+    border-radius: 6px; background: #fff; color: var(--ink); min-width: 160px;
+  }
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--grid); border-radius: 10px; padding: 16px; }
+  .card h2 { font-size: 15px; margin: 0 0 2px; }
+  .card p { font-size: 12px; color: var(--muted); margin: 0 0 12px; }
+  svg { width: 100%; height: auto; display: block; }
+  .bar-label { font-size: 11px; fill: var(--muted); }
+  .val-label { font-size: 11px; fill: var(--ink); font-weight: 600; }
+  .axis { stroke: var(--grid); stroke-width: 1; }
+  footer { margin-top: 32px; font-size: 12px; color: var(--muted); }
+  a { color: var(--adj); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Review funnel explorer</h1>
+  <p class="sub">Completion rate and review length by the star rating a user intends to give.</p>
+
+  <blockquote class="banner"><strong>This is built on synthetic data.</strong></blockquote>
+
+  <div class="note">
+    These are raw (unadjusted) segment figures for exploration. The adjusted
+    regression estimates that separate the star effect from confounders are in the
+    project README and outputs. Both outcomes hold their shape across every
+    segment: completion is U-shaped (higher at 1 and 5), length is inverted-U
+    (shorter at the extremes).
+  </div>
+
+  <div class="controls">
+    <div class="control">
+      <label for="seg">Segment by</label>
+      <select id="seg"></select>
+    </div>
+    <div class="control">
+      <label for="grp">Group</label>
+      <select id="grp"></select>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div class="card">
+      <h2>Completion rate by star</h2>
+      <p>Share of attempts that are submitted.</p>
+      <svg id="chart-completion" viewBox="0 0 360 240" role="img" aria-label="Completion rate by star"></svg>
+    </div>
+    <div class="card">
+      <h2>Review length by star</h2>
+      <p>Mean word count of completed reviews.</p>
+      <svg id="chart-length" viewBox="0 0 360 240" role="img" aria-label="Review length by star"></svg>
+    </div>
+  </div>
+
+  <footer>
+    Generated from <code>data/review_attempts.csv</code>. See the
+    <a href="https://github.com/k1monfared/star_rating_regression_analysis/blob/main/README.md">README</a> for the adjusted analysis and caveats.
+    <br />
+    <a href="https://github.com/k1monfared/star_rating_regression_analysis">Source code on GitHub</a>
+  </footer>
+</div>
+
+<script id="data" type="application/json">{"overall":{"1":{"n":4165,"completion":0.6641056422569027,"length":51.45625451916124},"2":{"n":3105,"completion":0.5706924315619968,"length":69.74040632054177},"3":{"n":4137,"completion":0.5694948029973411,"length":80.95670628183362},"4":{"n":12088,"completion":0.6296326935804103,"length":76.38864800946},"5":{"n":36505,"completion":0.6903985755375975,"length":53.87072967503869}},"segments":{"device":{"mobile":{"1":{"n":2829,"completion":0.6246023329798516,"length":47.42444821731749},"2":{"n":1774,"completion":0.52423900789177,"length":63.21290322580645},"3":{"n":1985,"completion":0.5103274559193954,"length":72.51036525172753},"4":{"n":6235,"completion":0.5714514835605453,"length":67.53887173730003},"5":{"n":24343,"completion":0.6523846691040546,"length":49.54757257099679}},"desktop":{"1":{"n":1336,"completion":0.7477544910179641,"length":58.587587587587585},"2":{"n":1331,"completion":0.6326070623591284,"length":76.95011876484561},"3":{"n":2152,"completion":0.6240706319702602,"length":87.32762472077438},"4":{"n":5853,"completion":0.6916111395865369,"length":84.17811264822134},"5":{"n":12162,"completion":0.7664857753658938,"length":61.23567903883287}}},"prompt":{"prompted":{"1":{"n":1795,"completion":0.7771587743732591,"length":54.02437275985663},"2":{"n":1330,"completion":0.706766917293233,"length":71.69574468085106},"3":{"n":1902,"completion":0.6987381703470031,"length":85.67870579382995},"4":{"n":5886,"completion":0.744818212708121,"length":80.28740875912409},"5":{"n":16555,"completion":0.7960132890365449,"length":56.37896494156928}},"not_prompted":{"1":{"n":2370,"completion":0.5784810126582278,"length":48.843180160466815},"2":{"n":1775,"completion":0.4687323943661972,"length":67.53125},"3":{"n":2235,"completion":0.4595078299776286,"length":74.84615384615384},"4":{"n":6202,"completion":0.5203160270880361,"length":71.09203594669972},"5":{"n":19950,"completion":0.6027568922305765,"length":51.12199584199584}}},"category":{"restaurants":{"1":{"n":1510,"completion":0.6768211920529801,"length":59.611545988258314},"2":{"n":1082,"completion":0.5998151571164511,"length":77.64406779661017},"3":{"n":1487,"completion":0.5904505716207128,"length":94.37585421412301},"4":{"n":4159,"completion":0.6412599182495792,"length":89.37270341207349},"5":{"n":12796,"completion":0.7029540481400438,"length":62.57354085603113}},"shopping":{"1":{"n":804,"completion":0.667910447761194,"length":44.66294227188082},"2":{"n":590,"completion":0.5627118644067797,"length":62.6355421686747},"3":{"n":820,"completion":0.5719512195121951,"length":72.95095948827291},"4":{"n":2445,"completion":0.6204498977505113,"length":67.47593935398814},"5":{"n":7300,"completion":0.6782191780821918,"length":48.514643506362354}},"services":{"1":{"n":555,"completion":0.6414414414414414,"length":45.20786516853933},"2":{"n":438,"completion":0.5296803652968036,"length":60.11206896551724},"3":{"n":581,"completion":0.5301204819277109,"length":68.57142857142857},"4":{"n":1642,"completion":0.6193666260657734,"length":65.68436578171091},"5":{"n":4976,"completion":0.667604501607717,"length":45.81155930162553}},"beauty":{"1":{"n":492,"completion":0.6747967479674797,"length":46.13855421686747},"2":{"n":361,"completion":0.5373961218836565,"length":64.48969072164948},"3":{"n":449,"completion":0.5746102449888641,"length":70.23643410852713},"4":{"n":1360,"completion":0.6455882352941177,"length":67.5250569476082},"5":{"n":4124,"completion":0.7015033947623667,"length":48.13480815762185}},"nightlife":{"1":{"n":466,"completion":0.6630901287553648,"length":49.17152103559871},"2":{"n":364,"completion":0.5631868131868132,"length":71.21463414634147},"3":{"n":449,"completion":0.5412026726057907,"length":76.22633744855968},"4":{"n":1475,"completion":0.6067796610169491,"length":74.33966480446928},"5":{"n":4289,"completion":0.6868733970622523,"length":51.99049558723693}},"health":{"1":{"n":338,"completion":0.621301775147929,"length":51.5},"2":{"n":270,"completion":0.5925925925925926,"length":70.8625},"3":{"n":351,"completion":0.5698005698005698,"length":79.47},"4":{"n":1007,"completion":0.6325719960278053,"length":75.43799058084772},"5":{"n":3020,"completion":0.6940397350993377,"length":52.50715648854962}}}}}</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const SVGNS = "http://www.w3.org/2000/svg";
+const STARS = ["1","2","3","4","5"];
+
+function segmentOptions() {
+  const seg = document.getElementById('seg');
+  const opts = [["overall","Overall (no split)"]];
+  Object.keys(DATA.segments).forEach(k => opts.push([k, k.charAt(0).toUpperCase()+k.slice(1)]));
+  seg.innerHTML = "";
+  opts.forEach(([v,t]) => { const o=document.createElement('option'); o.value=v; o.textContent=t; seg.appendChild(o); });
+}
+
+function groupOptions() {
+  const seg = document.getElementById('seg').value;
+  const grp = document.getElementById('grp');
+  grp.innerHTML = "";
+  if (seg === "overall") { grp.disabled = true; const o=document.createElement('option'); o.textContent="All attempts"; grp.appendChild(o); return; }
+  grp.disabled = false;
+  Object.keys(DATA.segments[seg]).forEach(k => {
+    const o=document.createElement('option'); o.value=k; o.textContent=k.replace(/_/g,' ');
+    grp.appendChild(o);
+  });
+}
+
+function currentSeries() {
+  const seg = document.getElementById('seg').value;
+  if (seg === "overall") return DATA.overall;
+  const grp = document.getElementById('grp').value;
+  return DATA.segments[seg][grp];
+}
+
+function drawBars(svgId, series, key, fmt, color, maxOverride) {
+  const svg = document.getElementById(svgId);
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  const W=360, H=240, padL=40, padR=12, padT=16, padB=30;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const vals = STARS.map(s => series[s][key]);
+  const maxV = maxOverride || Math.max(...vals) * 1.15;
+  // baseline
+  const axis = document.createElementNS(SVGNS,'line');
+  axis.setAttribute('x1',padL); axis.setAttribute('x2',W-padR);
+  axis.setAttribute('y1',padT+plotH); axis.setAttribute('y2',padT+plotH);
+  axis.setAttribute('class','axis'); svg.appendChild(axis);
+  const bw = plotW / STARS.length;
+  STARS.forEach((s,i) => {
+    const v = series[s][key];
+    const h = (v / maxV) * plotH;
+    const x = padL + i*bw + bw*0.18;
+    const y = padT + plotH - h;
+    const rect = document.createElementNS(SVGNS,'rect');
+    rect.setAttribute('x',x); rect.setAttribute('y',y);
+    rect.setAttribute('width',bw*0.64); rect.setAttribute('height',h);
+    rect.setAttribute('rx',3); rect.setAttribute('fill',color);
+    svg.appendChild(rect);
+    const vl = document.createElementNS(SVGNS,'text');
+    vl.setAttribute('x',x+bw*0.32); vl.setAttribute('y',y-4);
+    vl.setAttribute('text-anchor','middle'); vl.setAttribute('class','val-label');
+    vl.textContent = fmt(v); svg.appendChild(vl);
+    const xl = document.createElementNS(SVGNS,'text');
+    xl.setAttribute('x',x+bw*0.32); xl.setAttribute('y',padT+plotH+18);
+    xl.setAttribute('text-anchor','middle'); xl.setAttribute('class','bar-label');
+    xl.textContent = s + " star"; svg.appendChild(xl);
+  });
+}
+
+function render() {
+  const s = currentSeries();
+  drawBars('chart-completion', s, 'completion', v => (100*v).toFixed(0)+"%", "var(--adj)", 1.0);
+  drawBars('chart-length', s, 'length', v => v.toFixed(0), "var(--accent)", null);
+}
+
+document.getElementById('seg').addEventListener('change', () => { groupOptions(); render(); });
+document.getElementById('grp').addEventListener('change', render);
+
+segmentOptions();
+groupOptions();
+render();
+</script>
+</body>
+</html>

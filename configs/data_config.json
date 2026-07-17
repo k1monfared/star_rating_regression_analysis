@@ -1,0 +1,89 @@
+{
+  "description": "Ground-truth generative parameters for the synthetic review-attempt data. Every parameter here is the KNOWN truth that the regression analysis attempts to recover. See data/DATA_DICTIONARY.md and README.md for the narrative.",
+  "seed": 42,
+  "n_attempts": 60000,
+  "n_businesses": 4000,
+
+  "categories": ["restaurants", "shopping", "nightlife", "beauty", "services", "health"],
+  "category_probs": [0.34, 0.20, 0.12, 0.12, 0.14, 0.08],
+
+  "user": {
+    "review_count_lognormal_mu": 1.6,
+    "review_count_lognormal_sigma": 1.1,
+    "tenure_days_lognormal_mu": 5.6,
+    "tenure_days_lognormal_sigma": 0.9,
+    "elite_base_logit": -2.4,
+    "elite_experience_coef": 0.9
+  },
+
+  "business": {
+    "avg_rating_mean": 3.85,
+    "avg_rating_sd": 0.55,
+    "avg_rating_min": 1.0,
+    "avg_rating_max": 5.0,
+    "review_count_lognormal_mu": 3.2,
+    "review_count_lognormal_sigma": 1.0
+  },
+
+  "context": {
+    "mobile_prob": 0.62,
+    "prompt_base_logit": -0.4,
+    "prompt_experience_coef": 0.55,
+    "prompt_mobile_coef": 0.35
+  },
+
+  "star_distribution": {
+    "comment": "Base log-weights are J-shaped (mass at 4 and 5), typical of review platforms. Confounders shift the star a user intends to give, which is what creates confounding with completion and length.",
+    "base_log_weights": [-2.12, -2.30, -2.04, -1.39, -0.92],
+    "mobile_shift": [0.55, 0.10, -0.30, -0.10, 0.55],
+    "experience_shift": [-0.35, -0.12, 0.15, 0.28, -0.10],
+    "business_avg_shift": [-0.70, -0.35, 0.00, 0.35, 0.70]
+  },
+
+  "completion_model": {
+    "comment": "TRUE completion process. Logit link. The star effect is a U-shape encoded as a positive coefficient on (star-3)^2, so completion is highest at 1 and 5. Confounders (mobile, experience, prompt) also drive completion AND are correlated with star, which biases the naive estimate.",
+    "intercept": 0.15,
+    "star_u_coef": 0.20,
+    "experience_coef": 0.45,
+    "mobile_coef": -0.70,
+    "prompt_coef": 0.85,
+    "elite_coef": 0.30,
+    "business_logreviews_coef": 0.06,
+    "category_effects": {
+      "restaurants": 0.10,
+      "shopping": -0.05,
+      "nightlife": -0.02,
+      "beauty": 0.03,
+      "services": -0.08,
+      "health": 0.00
+    }
+  },
+
+  "length_model": {
+    "comment": "TRUE length process for completed reviews (word count). Negative binomial counts with log link. The star effect is an inverted-U encoded as a NEGATIVE coefficient on (star-3)^2, so reviews are shorter at the 1 and 5 extremes and longest in the middle. Mobile shortens reviews and is over-represented at the extremes, which exaggerates the raw extreme-shortness.",
+    "log_intercept": 4.30,
+    "star_u_coef": -0.075,
+    "experience_coef": 0.16,
+    "mobile_coef": -0.24,
+    "prompt_coef": 0.05,
+    "elite_coef": 0.12,
+    "category_effects": {
+      "restaurants": 0.22,
+      "shopping": -0.05,
+      "nightlife": 0.02,
+      "beauty": -0.03,
+      "services": -0.10,
+      "health": 0.06
+    },
+    "nb_dispersion": 6.0,
+    "min_words": 8
+  },
+
+  "rdd": {
+    "comment": "Optional regression-discontinuity extension. A business displayed star is the true average rounded to the nearest half star. Crossing a rounding threshold bumps the displayed rating and causes a small jump in downstream weekly review-attempt volume. This injected jump is the LATE the RDD tries to recover.",
+    "true_jump": 0.08,
+    "slope": 0.15,
+    "noise_sd": 0.06,
+    "bandwidth": 0.20
+  }
+}

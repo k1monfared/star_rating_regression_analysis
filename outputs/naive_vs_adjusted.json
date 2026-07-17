@@ -1,0 +1,34 @@
+{
+  "note": "All 'recovered' numbers are from the adjusted specifications that control for confounders. 'naive' numbers omit controls and are biased.",
+  "completion_u_shape_coef": {
+    "ground_truth": 0.2,
+    "recovered_adjusted": 0.2039937184454997,
+    "recovered_adjusted_ci": [
+      0.1919614892997963,
+      0.2160259475912031
+    ],
+    "naive": 0.11211539242555682,
+    "naive_ci": [
+      0.10116361600062278,
+      0.12306716885049086
+    ]
+  },
+  "length_u_shape_coef_log_scale": {
+    "ground_truth": -0.075,
+    "recovered_negbin": -0.07680006042661916,
+    "recovered_negbin_ci": [
+      -0.07971828699116185,
+      -0.07388183386207647
+    ],
+    "recovered_ols_log": -0.07739120242604008,
+    "naive_ols_log": -0.10934953858319403
+  },
+  "rdd_jump": {
+    "ground_truth": 0.08,
+    "recovered": 0.07957304994725192,
+    "recovered_ci": [
+      0.07125756894193812,
+      0.08788853095256573
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+# Local virtual environment (not committed; recreate from requirements.txt)
+.venv/
+venv/
+env/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS noise
+.DS_Store
+*.pyc
+.env
+.playwright-mcp/
